@@ -26,7 +26,7 @@ table = soup.find('table', id='stats_standard')
 driver.quit()
 
 #Extract headers from table
-headers = [header.text for header in table.find('thead').findAll('th')]
+headers = [header.text for header in table.find('thead').find('tr', class_=lambda x:x != 'over_header').findAll('th') if header.get('data-stat') != 'ranker']
 
 #Extract player data
 for player in table.findAll('tr', class_=lambda x: x != 'thead'):
@@ -41,3 +41,34 @@ for player in table.findAll('tr', class_=lambda x: x != 'thead'):
         elif('FW' in data[2]):
             positions['Forwards'].append(data)
 
+#Write goalkeeper stats
+with open("Goalkeepers.csv", mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for data in positions['Goalkeepers']:
+        print(data)
+        writer.writerow(data)
+
+#Write defender stats
+with open("Defenders.csv", mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for data in positions['Defenders']:
+        print(data)
+        writer.writerow(data)
+
+#Write midfielder stats
+with open("Midfielders.csv", mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for data in positions['Midfielders']:
+        print(data)
+        writer.writerow(data)
+
+#Write forward stats
+with open("Forwards.csv", mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(headers)
+    for data in positions['Forwards']:
+        print(data)
+        writer.writerow(data)
